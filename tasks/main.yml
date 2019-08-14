@@ -1,0 +1,49 @@
+---
+- name: resolve platform specific vars
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+      skip: true
+      paths:
+        - '{{ role_path }}/vars'
+- name: check for existing install
+  become: yes
+  stat:
+    path: '{{ cockroachdb_install_dir }}'
+  changed_when: False
+  register: cockroachdb_binary
+- when: not cockroachdb_binary.stat.exists
+  block:
+    - name: download
+      become: yes
+      become_user: root
+      get_url:
+        url: '{{ cockroachdb_url }}'
+        dest: /tmp/{{ cockroachdb_archive }}
+        mode: 0644
+        checksum: '{{ cockroachdb_checksum }}'
+    - name: unarchive
+      become: yes
+      become_user: root
+      unarchive:
+        remote_src: yes
+        src: /tmp/{{ cockroachdb_archive }}
+        dest: '{{ cockroachdb_parent_install_dir }}'
+        creates: '{{ cockroachdb_install_dir }}'
+  always:
+    - name: cleanup
+      become: yes
+      become_user: root
+      file:
+        path: /tmp/{{ cockroachdb_archive }}
+        state: absent
+- name: link
+  become: yes
+  become_user: root
+  file:
+    src: '{{ cockroachdb_install_dir }}/cockroach'
+    dest: '{{ cockroachdb_parent_install_dir }}/bin/cockroach'
+    state: link

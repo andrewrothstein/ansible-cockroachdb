@@ -1,0 +1,19 @@
+---
+# defaults file for cockroachdb
+cockroachdb_ver: v19.1.4
+
+cockroachdb_os: linux
+cockroachdb_arch: amd64
+cockroachdb_archive_type: tgz
+
+cockroachdb_mirror: https://binaries.cockroachdb.com
+cockroachdb_checksums:
+  v19.1.4:
+    # https://binaries.cockroachdb.com/cockroach-v19.1.4.darwin-10.9-amd64.tgz
+    darwin-10.9-amd64: sha256:6911796049865aa1c27d11904893ea6f7a031bdfe90f531a4ea510fde3568439
+    # https://binaries.cockroachdb.com/cockroach-v19.1.4.linux-amd64.tgz
+    linux-amd64: sha256:fce27ed66bc456c12648fbff3e3734e596a246518faf5f9d598e07e849db4059
+    # https://binaries.cockroachdb.com/cockroach-v19.1.4.windows-6.2-amd64.zip
+    windows-6.2-amd64: sha256:9b4aa3e98a4186dcd793e7a2097444b9783fbfe12a342c55fe183372e5785a6b
+
+cockroachdb_parent_install_dir: /usr/local

@@ -1,0 +1,8 @@
+---
+# vars file for cockroachdb
+cockroachdb_platform: '{{ cockroachdb_os }}-{{ cockroachdb_arch }}'
+cockroachdb_name: cockroach-{{ cockroachdb_ver }}.{{ cockroachdb_platform }}
+cockroachdb_archive: '{{ cockroachdb_name }}.{{ cockroachdb_archive_type }}'
+cockroachdb_url: '{{ cockroachdb_mirror }}/{{ cockroachdb_archive }}'
+cockroachdb_checksum: '{{ cockroachdb_checksums[cockroachdb_ver][cockroachdb_platform] }}'
+cockroachdb_install_dir: '{{ cockroachdb_parent_install_dir }}/{{ cockroachdb_name }}'
